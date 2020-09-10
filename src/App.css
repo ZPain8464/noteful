@@ -1,0 +1,49 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+main {
+  display: flex;
+}
+
+aside {
+  flex: 1;
+  border-right: 1px solid blue;
+}
+
+section {
+  flex: 4;
+}
+
+ul {
+  list-style: none;
+  text-align: left;
+}
+
+.Note_name {
+  text-align: left;
+  width: 25%;
+  padding: 8px 0 8px 8px;
+  margin-left: 10px;
+  border: 1px grey solid;
+}
+
+.Modified_date {
+  text-align: left;
+  margin-left: 10px;
+}
+
+.Note_content {
+  text-align: left;
+  margin-left: 10px;
+  width: 35%;
+  border: 1px grey solid;
+}
+
+.Notes ul li {
+  border: 1px grey solid;
+  width: 20%;
+  text-align: center;
+  padding: 2%;
+}
