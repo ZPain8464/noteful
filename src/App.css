@@ -47,3 +47,15 @@ ul {
   text-align: center;
   padding: 2%;
 }
+
+.BackButton {
+  border-radius: 30px;
+  border: solid 1px black;
+  background-color: #cacaca;
+  height: 45px;
+  width: 45px;
+  display: block;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}

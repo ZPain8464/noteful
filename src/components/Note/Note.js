@@ -1,5 +1,6 @@
 import React from "react";
 import DummyStore from "../../DummyStore/DummyStore";
+import BackButton from "../BackButton/BackButton";
 
 export default function Note(props) {
   const notes = DummyStore.notes;
@@ -8,18 +9,21 @@ export default function Note(props) {
     : notes;
   const renderNote = noteList.map((n, i) => {
     return (
-      <>
-        <h2 key={i} className="Note_name">
-          {n.name}
-        </h2>
-        <p key={i} className="Modified_date">
-          Modified on {Date(n.modified)}
+      <React.Fragment key={i}>
+        <h2 className="Note_name">{n.name}</h2>
+        <p className="Modified_date">
+          Modified on {new Date(n.modified).toLocaleDateString()}
         </p>
-        <p key={i} className="Note_content">
-          {n.content}
-        </p>
-      </>
+        <p className="Note_content">{n.content}</p>
+      </React.Fragment>
     );
   });
-  return <div className="Note">{renderNote}</div>;
+  return (
+    <>
+      <div className="BackButton_section">
+        <BackButton props={props.history} />
+      </div>
+      <div className="Note">{renderNote}</div>
+    </>
+  );
 }

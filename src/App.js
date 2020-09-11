@@ -15,6 +15,18 @@ class App extends Component {
     folders: [],
   };
 
+  selectedFolder = (folder) => {
+    this.setState({
+      folders: folder,
+    });
+  };
+
+  selectedNote = (note) => {
+    this.setState({
+      notes: note,
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -25,7 +37,12 @@ class App extends Component {
         </header>
         <main>
           <aside>
-            <Route path="/" component={Folders} />
+            <Route
+              path="/"
+              render={() => (
+                <Folders selFolder={(folder) => this.selectedFolder(folder)} />
+              )}
+            />
           </aside>
           <section>
             <Route exact path={["/", "/folder/:folderid"]} component={Notes} />
@@ -38,3 +55,7 @@ class App extends Component {
 }
 
 export default App;
+
+// render={(note) => (
+//                 <Note selNote={(note) => this.selectedNote(note)} />
+//               )}
