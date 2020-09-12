@@ -11,7 +11,7 @@ export default function Notes(props) {
     <div className="Notes">
       <ul>
         {noteList.map((note) => (
-          <li key={note.id}>
+          <li onClick={(e) => props.selNote(note)} key={note.id}>
             <Link to={`/note/${note.id}`}>{note.name}</Link>
           </li>
         ))}

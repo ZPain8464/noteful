@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import DummyStore from "../../DummyStore/DummyStore";
-// Create back button and render selected folder
 
 class Folders extends Component {
   render() {
     const folders = DummyStore.folders;
-
     return (
       <div className="Folders">
         <ul>

@@ -39,14 +39,37 @@ class App extends Component {
           <aside>
             <Route
               path="/"
-              render={() => (
-                <Folders selFolder={(folder) => this.selectedFolder(folder)} />
+              render={(routerProps) => (
+                <Folders
+                  {...routerProps}
+                  {...this.state.folders}
+                  selFolder={(folder) => this.selectedFolder(folder)}
+                />
               )}
             />
           </aside>
           <section>
-            <Route exact path={["/", "/folder/:folderid"]} component={Notes} />
-            <Route exact path={["/note/:noteid"]} component={Note} />
+            <Route
+              exact
+              path={["/", "/folder/:folderid"]}
+              render={(routerProps) => (
+                <Notes
+                  {...routerProps}
+                  selNote={(note) => this.selectedNote(note)}
+                />
+              )}
+            />
+            <Route
+              exact
+              path={["/note/:noteid"]}
+              render={(routerProps) => (
+                <Note
+                  {...routerProps}
+                  folder={this.state.folders}
+                  note={this.state.notes}
+                />
+              )}
+            />
           </section>
         </main>
       </div>
@@ -55,7 +78,3 @@ class App extends Component {
 }
 
 export default App;
-
-// render={(note) => (
-//                 <Note selNote={(note) => this.selectedNote(note)} />
-//               )}
