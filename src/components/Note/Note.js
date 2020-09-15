@@ -1,29 +1,61 @@
 import React from "react";
-import DummyStore from "../../DummyStore/DummyStore";
+import Context from "../NotefulContext/NotefulContext";
 import BackButton from "../BackButton/BackButton";
+import config from "../../config";
 
-export default function Note(props) {
-  const notes = DummyStore.notes;
-  const noteList = props.match.params.noteid
-    ? notes.filter((n) => n.id === props.match.params.noteid)
-    : notes;
-  const renderNote = noteList.map((n, i) => {
+export default class Note extends React.Component {
+  static contextType = Context;
+
+  handleDelete = (noteid, callback) => {
+    this.props.history.push("/");
+    fetch(`${config.API_ENDPOINT}/notes/${noteid}`, {
+      method: "DELETE",
+      "content-type": "application/json",
+    })
+      .then((res) => {
+        res.json();
+      })
+      .then((data) => {
+        callback(noteid);
+      });
+  };
+
+  render() {
+    const { notes } = this.context;
+    const noteList = this.props.match.params.noteid
+      ? notes.filter((n) => n.id === this.props.match.params.noteid)
+      : notes;
+    const renderNote = noteList.map((n, i) => {
+      return (
+        <React.Fragment key={i}>
+          <div className="Note_name">
+            <h2>{n.name}</h2>
+            <button
+              onClick={(e) =>
+                this.handleDelete(
+                  this.props.match.params.noteid,
+                  this.context.deleteNote
+                )
+              }
+              className="Note_delete"
+            >
+              X
+            </button>
+          </div>
+          <p className="Modified_date">
+            Modified on {new Date(n.modified).toLocaleDateString()}
+          </p>
+          <p className="Note_content">{n.content}</p>
+        </React.Fragment>
+      );
+    });
     return (
-      <React.Fragment key={i}>
-        <h2 className="Note_name">{n.name}</h2>
-        <p className="Modified_date">
-          Modified on {new Date(n.modified).toLocaleDateString()}
-        </p>
-        <p className="Note_content">{n.content}</p>
-      </React.Fragment>
+      <>
+        <div className="BackButton_section">
+          <BackButton {...this.props} />
+        </div>
+        <div className="Note">{renderNote}</div>
+      </>
     );
-  });
-  return (
-    <>
-      <div className="BackButton_section">
-        <BackButton props={props.history} />
-      </div>
-      <div className="Note">{renderNote}</div>
-    </>
-  );
+  }
 }

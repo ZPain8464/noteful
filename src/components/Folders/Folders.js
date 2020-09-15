@@ -1,16 +1,26 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import DummyStore from "../../DummyStore/DummyStore";
+import NotefulContext from "../NotefulContext/NotefulContext";
+import "../../config";
 
 class Folders extends Component {
+  static contextType = NotefulContext;
+
   render() {
-    const folders = DummyStore.folders;
+    const { folders } = this.context;
     return (
       <div className="Folders">
         <ul>
           {folders.map((folder) => (
-            <li onClick={(e) => this.props.selFolder(folder)} key={folder.id}>
-              <Link to={`/folder/${folder.id}`}>{folder.name}</Link>
+            <li key={folder.id}>
+              <Link
+                to={`/folder/${folder.id}`}
+                className={
+                  folder.id === this.props.match.params.folderid ? "active" : ""
+                }
+              >
+                {folder.name}
+              </Link>
             </li>
           ))}
         </ul>

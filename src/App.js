@@ -5,9 +5,8 @@ import "./App.css";
 import Folders from "./components/Folders/Folders";
 import Notes from "./components/Notes/Notes";
 import Note from "./components/Note/Note";
-import "./DummyStore/DummyStore";
-
-// Add state to Routes
+import NotefulContext from "./components/NotefulContext/NotefulContext";
+import config from "./config";
 
 class App extends Component {
   state = {
@@ -15,19 +14,29 @@ class App extends Component {
     folders: [],
   };
 
-  selectedFolder = (folder) => {
+  deleteNote = (noteid) => {
+    const newNotes = this.state.notes.filter((nid) => nid.id !== noteid);
     this.setState({
-      folders: folder,
+      notes: newNotes,
     });
   };
 
-  selectedNote = (note) => {
-    this.setState({
-      notes: note,
-    });
-  };
+  componentDidMount() {
+    fetch(`${config.API_ENDPOINT}/folders`)
+      .then((res) => res.json())
+      .then((folders) => this.setState({ folders }));
+    fetch(`${config.API_ENDPOINT}/notes`)
+      .then((res) => res.json())
+      .then((notes) => this.setState({ notes }));
+  }
 
   render() {
+    const contextValue = {
+      notes: this.state.notes,
+      folders: this.state.folders,
+      deleteNote: this.deleteNote,
+    };
+
     return (
       <div className="App">
         <header>
@@ -35,43 +44,25 @@ class App extends Component {
             <Link to="/">Noteful</Link>
           </h1>
         </header>
-        <main>
-          <aside>
-            <Route
-              path="/"
-              render={(routerProps) => (
-                <Folders
-                  {...routerProps}
-                  {...this.state.folders}
-                  selFolder={(folder) => this.selectedFolder(folder)}
-                />
-              )}
-            />
-          </aside>
-          <section>
-            <Route
-              exact
-              path={["/", "/folder/:folderid"]}
-              render={(routerProps) => (
-                <Notes
-                  {...routerProps}
-                  selNote={(note) => this.selectedNote(note)}
-                />
-              )}
-            />
-            <Route
-              exact
-              path={["/note/:noteid"]}
-              render={(routerProps) => (
-                <Note
-                  {...routerProps}
-                  folder={this.state.folders}
-                  note={this.state.notes}
-                />
-              )}
-            />
-          </section>
-        </main>
+        <NotefulContext.Provider value={contextValue}>
+          <main>
+            <aside>
+              <Route
+                exact
+                path={["/", "/folder/:folderid", "/note/:noteid"]}
+                component={Folders}
+              />
+            </aside>
+            <section>
+              <Route
+                exact
+                path={["/", "/folder/:folderid"]}
+                component={Notes}
+              />
+              <Route exact path="/note/:noteid" component={Note} />
+            </section>
+          </main>
+        </NotefulContext.Provider>
       </div>
     );
   }
