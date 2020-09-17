@@ -21,14 +21,15 @@ export default class Notes extends Component {
 
   render() {
     const { notes } = this.context;
-    // use ^ context variable and this.state.notes.filter w/ setState
-    // to remove a note from state and update context
 
     const noteList = this.props.match.params.folderid
       ? notes.filter((n) => n.folderId === this.props.match.params.folderid)
       : notes;
     return (
       <div className="Notes">
+        <Link to="/add-note">
+          <button>+ Note</button>
+        </Link>
         <ul>
           {noteList.map((note) => (
             <li key={note.id}>
@@ -44,6 +45,9 @@ export default class Notes extends Component {
             </li>
           ))}
         </ul>
+        <Link to="/add-note">
+          <button>+ Note</button>
+        </Link>
       </div>
     );
   }

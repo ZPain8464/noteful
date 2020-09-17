@@ -84,3 +84,17 @@ ul {
   font-size: 15px;
   color: #e63946;
 }
+
+.Note_form {
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  border: 1px grey solid;
+  margin-left: 20px;
+  padding: 10px;
+}
+
+.FolderForm {
+  border: 1px grey solid;
+  padding: 10px;
+}

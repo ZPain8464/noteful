@@ -6,6 +6,9 @@ import Folders from "./components/Folders/Folders";
 import Notes from "./components/Notes/Notes";
 import Note from "./components/Note/Note";
 import NotefulContext from "./components/NotefulContext/NotefulContext";
+import FolderForm from "./components/AddFolder/FolderForm";
+import NoteForm from "./components/AddNote/NoteForm";
+
 import config from "./config";
 
 class App extends Component {
@@ -18,6 +21,18 @@ class App extends Component {
     const newNotes = this.state.notes.filter((nid) => nid.id !== noteid);
     this.setState({
       notes: newNotes,
+    });
+  };
+
+  createFolder = (folder) => {
+    this.setState({
+      folders: [...this.state.folders, folder],
+    });
+  };
+
+  createNote = (note) => {
+    this.setState({
+      notes: [...this.state.notes, note],
     });
   };
 
@@ -35,6 +50,8 @@ class App extends Component {
       notes: this.state.notes,
       folders: this.state.folders,
       deleteNote: this.deleteNote,
+      createFolder: this.createFolder,
+      createNote: this.createNote,
     };
 
     return (
@@ -60,6 +77,8 @@ class App extends Component {
                 component={Notes}
               />
               <Route exact path="/note/:noteid" component={Note} />
+              <Route exact path="/add-folder" component={FolderForm} />
+              <Route exact path="/add-note" component={NoteForm} />
             </section>
           </main>
         </NotefulContext.Provider>

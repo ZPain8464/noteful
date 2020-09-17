@@ -24,6 +24,11 @@ class Folders extends Component {
             </li>
           ))}
         </ul>
+        <Link to="/add-folder">
+          <div className="AddFolder">
+            <button>+ Folder</button>
+          </div>
+        </Link>
       </div>
     );
   }
