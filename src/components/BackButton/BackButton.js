@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export default function BackButton(props) {
   return (
@@ -9,3 +10,7 @@ export default function BackButton(props) {
     </>
   );
 }
+
+BackButton.propTypes = {
+  match: PropTypes.object.isRequired,
+};

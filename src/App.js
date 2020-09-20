@@ -9,12 +9,20 @@ import NotefulContext from "./components/NotefulContext/NotefulContext";
 import FolderForm from "./components/AddFolder/FolderForm";
 import NoteForm from "./components/AddNote/NoteForm";
 
+import ErrorPage from "./components/ErrorBoundary/ErrorPage";
 import config from "./config";
 
 class App extends Component {
   state = {
     notes: [],
     folders: [],
+    showActive: false,
+  };
+
+  showFolder = () => {
+    this.setState({
+      showActive: !this.state.showActive,
+    });
   };
 
   deleteNote = (noteid) => {
@@ -49,9 +57,11 @@ class App extends Component {
     const contextValue = {
       notes: this.state.notes,
       folders: this.state.folders,
+      showActive: this.state.showActive,
       deleteNote: this.deleteNote,
       createFolder: this.createFolder,
       createNote: this.createNote,
+      showFolder: this.showFolder,
     };
 
     return (
@@ -62,25 +72,27 @@ class App extends Component {
           </h1>
         </header>
         <NotefulContext.Provider value={contextValue}>
-          <main>
-            <aside>
-              <Route
-                exact
-                path={["/", "/folder/:folderid", "/note/:noteid"]}
-                component={Folders}
-              />
-            </aside>
-            <section>
-              <Route
-                exact
-                path={["/", "/folder/:folderid"]}
-                component={Notes}
-              />
-              <Route exact path="/note/:noteid" component={Note} />
-              <Route exact path="/add-folder" component={FolderForm} />
-              <Route exact path="/add-note" component={NoteForm} />
-            </section>
-          </main>
+          <ErrorPage>
+            <main>
+              <aside>
+                <Route
+                  exact
+                  path={["/", "/folder/:folderid", "/note/:noteid"]}
+                  component={Folders}
+                />
+              </aside>
+              <section>
+                <Route
+                  exact
+                  path={["/", "/folder/:folderid"]}
+                  component={Notes}
+                />
+                <Route exact path="/note/:noteid" component={Note} />
+                <Route exact path="/add-folder" component={FolderForm} />
+                <Route exact path="/add-note" component={NoteForm} />
+              </section>
+            </main>
+          </ErrorPage>
         </NotefulContext.Provider>
       </div>
     );

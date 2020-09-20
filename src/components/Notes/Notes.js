@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import NotefulContext from "../NotefulContext/NotefulContext";
 import config from "../../config";
 
+import PropTypes from "prop-types";
+
 export default class Notes extends Component {
   static contextType = NotefulContext;
 
@@ -27,9 +29,11 @@ export default class Notes extends Component {
       : notes;
     return (
       <div className="Notes">
-        <Link to="/add-note">
-          <button>+ Note</button>
-        </Link>
+        <div className="Note_button_position">
+          <Link to="/add-note">
+            <button className="AddNote_button">+ Note</button>
+          </Link>
+        </div>
         <ul>
           {noteList.map((note) => (
             <li key={note.id}>
@@ -45,10 +49,16 @@ export default class Notes extends Component {
             </li>
           ))}
         </ul>
-        <Link to="/add-note">
-          <button>+ Note</button>
-        </Link>
+        <div className="Note_button_position">
+          <Link to="/add-note">
+            <button className="AddNote_button">+ Note</button>
+          </Link>
+        </div>
       </div>
     );
   }
 }
+
+Notes.propTypes = {
+  match: PropTypes.object.isRequired,
+};

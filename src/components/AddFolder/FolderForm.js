@@ -3,6 +3,8 @@ import NotefulContext from "../NotefulContext/NotefulContext";
 import config from "../../config";
 import BackButton from "../../components/BackButton/BackButton";
 
+import PropTypes from "prop-types";
+
 export default class FolderForm extends Component {
   static contextType = NotefulContext;
 
@@ -49,3 +51,7 @@ export default class FolderForm extends Component {
     );
   }
 }
+
+FolderForm.propTypes = {
+  match: PropTypes.object.isRequired,
+};

@@ -3,6 +3,8 @@ import Context from "../NotefulContext/NotefulContext";
 import BackButton from "../BackButton/BackButton";
 import config from "../../config";
 
+import PropTypes from "prop-types";
+
 export default class Note extends React.Component {
   static contextType = Context;
 
@@ -59,3 +61,7 @@ export default class Note extends React.Component {
     );
   }
 }
+
+Note.propTypes = {
+  match: PropTypes.object.isRequired,
+};

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import NotefulContext from "../NotefulContext/NotefulContext";
+import PropTypes from "prop-types";
+
 import "../../config";
 
 class Folders extends Component {
@@ -26,12 +28,14 @@ class Folders extends Component {
         </ul>
         <Link to="/add-folder">
           <div className="AddFolder">
-            <button>+ Folder</button>
+            <button className="AddFolder_button">+ Folder</button>
           </div>
         </Link>
       </div>
     );
   }
 }
-
+Folders.propTypes = {
+  match: PropTypes.object.isRequired,
+};
 export default Folders;
