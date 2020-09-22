@@ -16,13 +16,6 @@ class App extends Component {
   state = {
     notes: [],
     folders: [],
-    showActive: false,
-  };
-
-  showFolder = () => {
-    this.setState({
-      showActive: !this.state.showActive,
-    });
   };
 
   deleteNote = (noteid) => {
@@ -57,7 +50,6 @@ class App extends Component {
     const contextValue = {
       notes: this.state.notes,
       folders: this.state.folders,
-      showActive: this.state.showActive,
       deleteNote: this.deleteNote,
       createFolder: this.createFolder,
       createNote: this.createNote,

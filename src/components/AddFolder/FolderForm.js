@@ -2,11 +2,37 @@ import React, { Component } from "react";
 import NotefulContext from "../NotefulContext/NotefulContext";
 import config from "../../config";
 import BackButton from "../../components/BackButton/BackButton";
+import ValidateFolder from "../../components/ValidationError/ValidateFolder";
 
 import PropTypes from "prop-types";
 
 export default class FolderForm extends Component {
   static contextType = NotefulContext;
+
+  state = {
+    name: {
+      value: "",
+      touched: false,
+    },
+  };
+
+  validateFolder = () => {
+    const folderName = this.state.name.value.trim();
+    if (folderName.name === 0) {
+      return "Name is required";
+    } else if (folderName.length < 3) {
+      return "Name must be at least 3 characters long";
+    }
+  };
+
+  updateFolder = (folder) => {
+    this.setState({
+      name: {
+        value: folder,
+        touched: true,
+      },
+    });
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -21,14 +47,19 @@ export default class FolderForm extends Component {
       body: JSON.stringify({ name: formInput }),
     })
       .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
         return res.json();
       })
       .then((folder) => {
         this.context.createFolder(folder);
-      });
+      })
+      .catch((error) => this.setState({ error }));
   };
 
   render() {
+    const nameError = this.validateFolder();
     return (
       <>
         <BackButton {...this.props} />
@@ -39,9 +70,19 @@ export default class FolderForm extends Component {
           >
             <h2>Create a folder</h2>
             <label htmlFor="Folder_name">Folder Name</label>
-            <input name="name" id="Folder_name" type="text" />
+            <input
+              onChange={(e) => this.updateFolder(e.target.value)}
+              name="name"
+              id="Folder_name"
+              type="text"
+            />
+            {this.state.name.touched && <ValidateFolder message={nameError} />}
             <div className="FolderForm_button">
-              <button className="FolderForm_submit" type="submit">
+              <button
+                disabled={this.validateFolder()}
+                className="FolderForm_submit"
+                type="submit"
+              >
                 Add Folder
               </button>
             </div>

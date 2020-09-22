@@ -41,7 +41,8 @@ export default class NoteForm extends Component {
     const name = e.target.name.value;
     const content = e.target.content.value;
     const folderId = e.target.folderid.value;
-
+    const date = Date(document.data).toString();
+    console.log(date);
     fetch(`${config.API_ENDPOINT}/notes`, {
       method: "POST",
       headers: {
@@ -51,14 +52,19 @@ export default class NoteForm extends Component {
         content: content,
         name: name,
         folderId: folderId,
+        modified: date,
       }),
     })
       .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
         return res.json();
       })
       .then((note) => {
         this.context.createNote(note);
-      });
+      })
+      .catch((error) => this.setState({ error }));
   };
 
   render() {
