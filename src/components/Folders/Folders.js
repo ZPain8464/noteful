@@ -10,6 +10,7 @@ class Folders extends Component {
 
   render() {
     const { folders } = this.context;
+
     return (
       <div className="Folders">
         <ul>
@@ -21,7 +22,7 @@ class Folders extends Component {
                   folder.id === this.props.match.params.folderid ? "active" : ""
                 }
               >
-                {folder.name}
+                {folder.folder_name}
               </Link>
             </li>
           ))}

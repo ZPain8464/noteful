@@ -37,16 +37,17 @@ export default class FolderForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.history.goBack("/");
-    const formInput = e.target.name.value;
+    const formInput = e.target.folder_name.value;
 
     fetch(`${config.API_ENDPOINT}/folders`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ name: formInput }),
+      body: JSON.stringify({ folder_name: formInput }),
     })
       .then((res) => {
+        console.log(res);
         if (!res.ok) {
           throw new Error(res.status);
         }
@@ -72,7 +73,7 @@ export default class FolderForm extends Component {
             <label htmlFor="Folder_name">Folder Name</label>
             <input
               onChange={(e) => this.updateFolder(e.target.value)}
-              name="name"
+              name="folder_name"
               id="Folder_name"
               type="text"
             />

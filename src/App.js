@@ -8,6 +8,7 @@ import Note from "./components/Note/Note";
 import NotefulContext from "./components/NotefulContext/NotefulContext";
 import FolderForm from "./components/AddFolder/FolderForm";
 import NoteForm from "./components/AddNote/NoteForm";
+import EditNote from "./components/EditNote/EditNote";
 
 import ErrorPage from "./components/ErrorBoundary/ErrorPage";
 import config from "./config";
@@ -37,6 +38,15 @@ class App extends Component {
     });
   };
 
+  updateNote = (updatedNote) => {
+    console.log(updatedNote);
+    this.setState({
+      notes: this.state.notes.map((n) =>
+        n.id !== updatedNote.id ? n : updatedNote
+      ),
+    });
+  };
+
   componentDidMount() {
     fetch(`${config.API_ENDPOINT}/folders`)
       .then((res) => res.json())
@@ -53,7 +63,7 @@ class App extends Component {
       deleteNote: this.deleteNote,
       createFolder: this.createFolder,
       createNote: this.createNote,
-      showFolder: this.showFolder,
+      updateNote: this.updateNote,
     };
 
     return (
@@ -82,6 +92,7 @@ class App extends Component {
                 <Route exact path="/note/:noteid" component={Note} />
                 <Route exact path="/add-folder" component={FolderForm} />
                 <Route exact path="/add-note" component={NoteForm} />
+                <Route exact path="/edit-note/:noteid" component={EditNote} />
               </section>
             </main>
           </ErrorPage>

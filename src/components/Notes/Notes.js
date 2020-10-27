@@ -14,6 +14,7 @@ export default class Notes extends Component {
       "content-type": "application/json",
     })
       .then((res) => {
+        console.log(res);
         res.json();
       })
       .then((data) => {
@@ -25,7 +26,7 @@ export default class Notes extends Component {
     const { notes } = this.context;
 
     const noteList = this.props.match.params.folderid
-      ? notes.filter((n) => n.folderId === this.props.match.params.folderid)
+      ? notes.filter((n) => n.folder_id === this.props.match.params.folderid)
       : notes;
     return (
       <div className="Notes">
@@ -37,7 +38,7 @@ export default class Notes extends Component {
         <ul>
           {noteList.map((note) => (
             <li key={note.id}>
-              <Link to={`/note/${note.id}`}>{note.name}</Link>
+              <Link to={`/note/${note.id}`}>{note.title}</Link>
               <button
                 onClick={() =>
                   this.handleDelete(note.id, this.context.deleteNote)
@@ -45,6 +46,9 @@ export default class Notes extends Component {
                 className="Notes_delete"
               >
                 X
+              </button>
+              <button>
+                <Link to={`/edit-note/${note.id}`}>Edit</Link>
               </button>
             </li>
           ))}

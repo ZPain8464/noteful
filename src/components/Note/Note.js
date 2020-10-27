@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Context from "../NotefulContext/NotefulContext";
 import BackButton from "../BackButton/BackButton";
 import config from "../../config";
@@ -9,6 +10,7 @@ export default class Note extends React.Component {
   static contextType = Context;
 
   handleDelete = (noteid, callback) => {
+    console.log(noteid);
     this.props.history.push("/");
     fetch(`${config.API_ENDPOINT}/notes/${noteid}`, {
       method: "DELETE",
@@ -24,14 +26,19 @@ export default class Note extends React.Component {
 
   render() {
     const { notes } = this.context;
+
     const noteList = this.props.match.params.noteid
       ? notes.filter((n) => n.id === this.props.match.params.noteid)
       : notes;
+
     const renderNote = noteList.map((n, i) => {
       return (
         <React.Fragment key={i}>
           <div className="Note_name">
-            <h2>{n.name}</h2>
+            <h2>{n.title}</h2>
+            <button>
+              <Link to={`/edit-note/${n.id}`}> Edit </Link>
+            </button>
             <button
               onClick={(e) =>
                 this.handleDelete(
@@ -45,7 +52,7 @@ export default class Note extends React.Component {
             </button>
           </div>
           <p className="Modified_date">
-            Modified on {new Date(n.modified).toLocaleDateString()}
+            Modified on {new Date(n.date_published).toLocaleDateString()}
           </p>
           <p className="Note_content">{n.content}</p>
         </React.Fragment>

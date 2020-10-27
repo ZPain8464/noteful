@@ -38,11 +38,11 @@ export default class NoteForm extends Component {
     e.preventDefault();
     this.props.history.goBack("/");
 
-    const name = e.target.name.value;
+    const title = e.target.title.value;
     const content = e.target.content.value;
-    const folderId = e.target.folderid.value;
-    const date = Date(document.data).toString();
-    console.log(date);
+    const folder_id = e.target.folder_id.value;
+    const date_created = Date(document.data).toString();
+
     fetch(`${config.API_ENDPOINT}/notes`, {
       method: "POST",
       headers: {
@@ -50,9 +50,9 @@ export default class NoteForm extends Component {
       },
       body: JSON.stringify({
         content: content,
-        name: name,
-        folderId: folderId,
-        modified: date,
+        title: title,
+        folder_id: folder_id,
+        modified: date_created,
       }),
     })
       .then((res) => {
@@ -78,7 +78,7 @@ export default class NoteForm extends Component {
               <h2>Create a note</h2>
               <label htmlFor="Note_name">Name</label>
               <input
-                name="name"
+                name="title"
                 type="text"
                 onChange={(e) => this.updateName(e.target.value)}
               />
@@ -88,10 +88,10 @@ export default class NoteForm extends Component {
               <label htmlFor="Note_content">Content</label>
               <input className="content" type="text" name="content" />
               <label htmlFor="Folder_name">Folder</label>
-              <select name="folderid" id="Note_dropdown_select">
+              <select name="folder_id" id="Note_dropdown_select">
                 {this.context.folders.map((f, i) => (
                   <option key={i} value={f.id}>
-                    {f.name}
+                    {f.folder_name}
                   </option>
                 ))}
               </select>
