@@ -3,10 +3,26 @@ import { Link } from "react-router-dom";
 import NotefulContext from "../NotefulContext/NotefulContext";
 import PropTypes from "prop-types";
 
-import "../../config";
+import config from "../../config";
 
 class Folders extends Component {
   static contextType = NotefulContext;
+
+  handleDelete = (folderid, cb) => {
+    fetch(config.API_ENDPOINT + `/folders/${folderid}`, {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((error) => Promise.reject(error));
+        }
+        return res;
+      })
+      .then(() => {
+        cb(folderid);
+      });
+  };
 
   render() {
     const { folders } = this.context;
@@ -19,11 +35,22 @@ class Folders extends Component {
               <Link
                 to={`/folder/${folder.id}`}
                 className={
-                  folder.id === this.props.match.params.folderid ? "active" : ""
+                  folder.id === Number(this.props.match.params.folderid)
+                    ? "active"
+                    : ""
                 }
               >
                 {folder.folder_name}
               </Link>
+              <Link to={`/edit-folder/${folder.id}`}>Edit</Link>
+              <button
+                onClick={() =>
+                  this.handleDelete(folder.id, this.context.deleteFolder)
+                }
+                className="Notes_delete"
+              >
+                X
+              </button>
             </li>
           ))}
         </ul>

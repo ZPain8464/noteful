@@ -15,7 +15,7 @@ export default class EditNote extends Component {
   };
 
   componentDidMount() {
-    const noteId = this.props.match.params.noteid;
+    const noteId = Number(this.props.match.params.noteid);
 
     fetch(config.API_ENDPOINT + `/notes/${noteId}`, {
       method: "GET",
@@ -50,33 +50,35 @@ export default class EditNote extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const noteId = this.props.match.params.noteid;
     const { id, title, content } = this.state;
     const newNote = { id, title, content };
 
-    fetch(config.API_ENDPOINT + `/notes/${noteId}`, {
+    fetch(config.API_ENDPOINT + `/notes/${newNote.id}`, {
       method: "PATCH",
       body: JSON.stringify(newNote),
-      header: {
+      headers: {
         "content-type": "application/json",
       },
     })
       .then((res) => {
-        if (!res.ok) return res.json().then((error) => Promise.reject(error));
+        if (!res.ok) {
+          return res.json().then((error) => Promise.reject(error));
+        }
+        return res;
       })
       .then(() => {
-        this.resetFields(newNote);
+        this.resetFields();
         this.context.updateNote(newNote);
         this.props.history.push("/");
       })
       .catch((error) => this.setState({ error }));
   };
 
-  resetField = (newFields) => {
+  resetFields = () => {
     this.setState({
-      id: newFields.id || "",
-      title: newFields.title || "",
-      content: newFields.content || "",
+      id: "",
+      title: "",
+      content: "",
     });
   };
 
@@ -85,7 +87,7 @@ export default class EditNote extends Component {
   };
 
   render() {
-    const { id, title, content } = this.state;
+    const { title, content } = this.state;
     return (
       <>
         <ErrorPage>
@@ -97,7 +99,7 @@ export default class EditNote extends Component {
                 this.handleSubmit(e);
               }}
             >
-              <h2>Edit note</h2>
+              <h2>Edit Note </h2>
               <label htmlFor="Edit_name">Edit Name</label>
               <input
                 name="title"

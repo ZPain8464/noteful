@@ -14,13 +14,21 @@ export default class Note extends React.Component {
     this.props.history.push("/");
     fetch(`${config.API_ENDPOINT}/notes/${noteid}`, {
       method: "DELETE",
-      "content-type": "application/json",
+      headers: {
+        "content-type": "application/json",
+      },
     })
       .then((res) => {
-        res.json();
+        if (!res.ok) {
+          return res.json().then((error) => Promise.reject(error));
+        }
+        return res;
       })
-      .then((data) => {
+      .then(() => {
         callback(noteid);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -28,7 +36,7 @@ export default class Note extends React.Component {
     const { notes } = this.context;
 
     const noteList = this.props.match.params.noteid
-      ? notes.filter((n) => n.id === this.props.match.params.noteid)
+      ? notes.filter((n) => n.id === Number(this.props.match.params.noteid))
       : notes;
 
     const renderNote = noteList.map((n, i) => {
@@ -42,7 +50,7 @@ export default class Note extends React.Component {
             <button
               onClick={(e) =>
                 this.handleDelete(
-                  this.props.match.params.noteid,
+                  Number(this.props.match.params.noteid),
                   this.context.deleteNote
                 )
               }

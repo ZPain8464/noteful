@@ -15,9 +15,9 @@ export default class Notes extends Component {
     })
       .then((res) => {
         console.log(res);
-        res.json();
+        return res;
       })
-      .then((data) => {
+      .then(() => {
         cb(noteid);
       });
   };
@@ -26,7 +26,9 @@ export default class Notes extends Component {
     const { notes } = this.context;
 
     const noteList = this.props.match.params.folderid
-      ? notes.filter((n) => n.folder_id === this.props.match.params.folderid)
+      ? notes.filter(
+          (n) => n.folder_id === Number(this.props.match.params.folderid)
+        )
       : notes;
     return (
       <div className="Notes">
