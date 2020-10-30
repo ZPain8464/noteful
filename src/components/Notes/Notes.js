@@ -14,7 +14,6 @@ export default class Notes extends Component {
       "content-type": "application/json",
     })
       .then((res) => {
-        console.log(res);
         return res;
       })
       .then(() => {
